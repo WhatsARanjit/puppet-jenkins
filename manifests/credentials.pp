@@ -40,6 +40,12 @@ define jenkins::credentials (
           "'${description}'",
           "'${private_key_or_path}'",
         ], ' '),
+        unless  => join([
+          $::jenkins::cli_helper::helper_cmd,
+          'credential_info',
+          $title,
+          ' | /bin/grep -q \'username\'',
+        ], ' '),
         require => Class['::jenkins::cli_helper'],
       }
     }
